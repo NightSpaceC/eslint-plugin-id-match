@@ -1,5 +1,6 @@
-/** @type {import('eslint').Rule.RuleModule} */
-export default {
+import { ESLintUtils, type TSESTree } from '@typescript-eslint/utils';
+
+export default ESLintUtils.RuleCreator.withoutDocs({
   meta: {
     type: 'suggestion',
     docs: {
@@ -16,12 +17,10 @@ export default {
   },
 
   create(context) {
-    /** @type {[ pattern: string ]} */
-    const [pattern] = context.options;
+    const [pattern] = context.options as [string];
     const regexp = new RegExp(pattern, 'u');
 
-    /** @type {(id: import('estree').Identifier) => void} */
-    const tryReport = id => {
+    const tryReport = (id: TSESTree.Identifier) => {
       const { name } = id;
       if (regexp.test(name)) {
         return;
@@ -40,6 +39,9 @@ export default {
       // eslint-disable-next-line id-match/properties-match
       FunctionDeclaration(node) {
         const { id } = node;
+        if (id === null) {
+          return;
+        }
         tryReport(id);
       },
       // eslint-disable-next-line id-match/properties-match
@@ -52,4 +54,4 @@ export default {
       },
     };
   },
-};
+});

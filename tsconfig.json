@@ -1,0 +1,128 @@
+{
+  // Visit https://aka.ms/tsconfig to read more about this file
+  "include": ["src/**/*"],
+
+  "compilerOptions": {
+    // File Layout
+    "rootDir": "src",
+    "outDir": "dist",
+
+    // Environment Settings
+    // See also https://aka.ms/tsconfig/module
+    "target": "esnext",
+    "lib": ["ESNext"],
+
+    // Modules
+    "allowArbitraryExtensions": true,
+    "allowImportingTsExtensions": true,
+    "allowUmdGlobalAccess": true,
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "noResolve": false,
+    "noUncheckedSideEffectImports": true,
+    "resolveJsonModule": false,
+    "rewriteRelativeImportExtensions": true,
+
+    // Emit
+    "importHelpers": true,
+    "preserveConstEnums": true,
+    "noEmit": false,
+    "noEmitHelpers": false,
+    "noEmitOnError": false,
+    "removeComments": false,
+    "stripInternal": false,
+
+    // Other Outputs
+    "declaration": true,
+    "declarationDir": "dist",
+    "declarationMap": true,
+    "inlineSourceMap": true,
+    "inlineSources": true,
+    "sourceMap": false,
+
+    // Style Options
+    "allowUnreachableCode": true,
+    "allowUnusedLabels": true,
+    "noFallthroughCasesInSwitch": false,
+    "noImplicitOverride": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+
+    // Stricter Typechecking Options
+    "exactOptionalPropertyTypes": true,
+    "noImplicitReturns": true,
+    "noPropertyAccessFromIndexSignature": false,
+    "noUncheckedIndexedAccess": true,
+
+    // Strict
+    "strict": true,
+    "noImplicitAny": false,
+    "noImplicitThis": false,
+    "useUnknownInCatchVariables": false,
+
+    // JavaScript Support
+    "allowJs": true,
+    "checkJs": true,
+    "maxNodeModuleJsDepth": 0,
+
+    // Editor Support
+    "disableSizeLimit": true,
+
+    // Interop Constraints
+    "erasableSyntaxOnly": false,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedDeclarations": false,
+    "isolatedModules": true,
+    "preserveSymlinks": true,
+    "verbatimModuleSyntax": true,
+
+    // Language and Environment
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "jsx": "react-jsx",
+    "libReplacement": true,
+    "moduleDetection": "force",
+    "noLib": false,
+    "useDefineForClassFields": true,
+
+    // Compiler Diagnostics
+    "explainFiles": false, // Optional
+    "extendedDiagnostics": true,
+    "listEmittedFiles": true,
+    "listFiles": false, // Optional
+    "noCheck": false,
+    "traceResolution": false, // Optional
+
+    // Projects
+    "composite": true,
+    "disableReferencedProjectLoad": false,
+    "disableSolutionSearching": false,
+    "disableSourceOfProjectReferenceRedirect": false,
+    "incremental": true,
+
+    // Output Formatting
+    "noErrorTruncation": false,
+    "preserveWatchOutput": false,
+    "pretty": true,
+
+    // Completeness
+    "skipLibCheck": true,
+
+    // Watch Options
+    "assumeChangesOnlyAffectDirectDependencies": true
+  },
+
+  "watchOptions": {
+    "watchFile": "useFsEvents",
+    "watchDirectory": "useFsEvents",
+    "fallbackPolling": "fixedinterval",
+    "synchronousWatchDirectory": false,
+    "excludeDirectories": ["**/node_modules", "dist"]
+  },
+
+  "typeAcquisition": {
+    "enable": false,
+    "disableFilenameBasedTypeAcquisition": true
+  }
+}

@@ -1,9 +1,10 @@
-/** @type {import('eslint').Rule.RuleModule} */
-export default {
+import { AST_NODE_TYPES, ESLintUtils } from '@typescript-eslint/utils';
+
+export default ESLintUtils.RuleCreator.withoutDocs({
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Require identifiers of members to match a specified regular expression',
+      description: 'Require identifiers of the key of properties to match a specified regular expression',
     },
     schema: [
       {
@@ -16,21 +17,18 @@ export default {
   },
 
   create(context) {
-    /** @type {[ pattern: string ]} */
-    const [pattern] = context.options;
+    const [pattern] = context.options as [string];
     const regexp = new RegExp(pattern, 'u');
     return {
       // eslint-disable-next-line id-match/properties-match
-      ClassDeclaration(node) {
-        const {
-          body: { body },
-        } = node;
-        for (const member of body) {
-          if (member.type === 'StaticBlock') {
+      ObjectExpression(node) {
+        const { properties } = node;
+        for (const property of properties) {
+          if (property.type !== AST_NODE_TYPES.Property) {
             continue;
           }
-          const { key } = member;
-          if (key.type !== 'Identifier' && key.type !== 'PrivateIdentifier') {
+          const { key } = property;
+          if (key.type !== AST_NODE_TYPES.Identifier) {
             continue;
           }
           const { name } = key;
@@ -49,4 +47,4 @@ export default {
       },
     };
   },
-};
+});

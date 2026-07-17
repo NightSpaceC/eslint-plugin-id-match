@@ -1,5 +1,7 @@
-/** @type {import('eslint').Rule.RuleModule} */
-export default {
+import { AST_NODE_TYPES, ESLintUtils, type TSESTree } from '@typescript-eslint/utils';
+import type { BindPattern } from '../types.ts';
+
+export default ESLintUtils.RuleCreator.withoutDocs({
   meta: {
     type: 'suggestion',
     docs: {
@@ -16,16 +18,13 @@ export default {
   },
 
   create(context) {
-    /** @type {[ pattern: string ]} */
-    const [pattern] = context.options;
+    const [pattern] = context.options as [string];
     const regexp = new RegExp(pattern, 'u');
 
-    /** @type {(node: import('estree').Identifier | import('estree').ObjectPattern | import('estree').AssignmentPattern | import('estree').ArrayPattern) => void} */
     // eslint-disable-next-line prefer-const
-    let walk;
+    let walk: (node: BindPattern) => void;
 
-    /** @type {(node: import('estree').Identifier) => void} */
-    const handleIdentifier = node => {
+    const handleIdentifier = (node: TSESTree.Identifier) => {
       const { name } = node;
       if (regexp.test(name)) {
         return;
@@ -40,39 +39,40 @@ export default {
       });
     };
 
-    /** @type {(node: import('estree').ObjectPattern) => void} */
-    const handleObjectPattern = node => {
+    const handleObjectPattern = (node: TSESTree.ObjectPattern) => {
       for (const element of node.properties) {
-        if (element.type === 'RestElement') {
-          handleIdentifier(element.argument);
+        if (element.type === AST_NODE_TYPES.RestElement) {
+          handleIdentifier(element.argument as TSESTree.Identifier);
           continue;
         }
-        walk(element.value);
+        walk(element.value as BindPattern);
       }
     };
 
-    /** @type {(node: import('estree').ArrayPattern) => void} */
-    const handleArrayPattern = node => {
+    const handleArrayPattern = (node: TSESTree.ArrayPattern) => {
       for (const element of node.elements) {
-        if (element.type === 'RestElement') {
-          handleIdentifier(element.argument);
+        if (element === null) {
           continue;
         }
-        walk(element);
+        if (element.type === AST_NODE_TYPES.RestElement) {
+          handleIdentifier(element.argument as TSESTree.Identifier);
+          continue;
+        }
+        walk(element as BindPattern);
       }
     };
 
     walk = node => {
       const { type } = node;
-      if (type === 'AssignmentPattern') {
+      if (type === AST_NODE_TYPES.AssignmentPattern) {
         walk(node.left);
         return;
       }
-      if (type === 'ObjectPattern') {
+      if (type === AST_NODE_TYPES.ObjectPattern) {
         handleObjectPattern(node);
         return;
       }
-      if (type === 'ArrayPattern') {
+      if (type === AST_NODE_TYPES.ArrayPattern) {
         handleArrayPattern(node);
         return;
       }
@@ -83,33 +83,33 @@ export default {
       // eslint-disable-next-line id-match/properties-match
       FunctionDeclaration(node) {
         for (const parameter of node.params) {
-          if (parameter.type === 'RestElement') {
-            handleIdentifier(parameter.argument);
+          if (parameter.type === AST_NODE_TYPES.RestElement) {
+            handleIdentifier(parameter.argument as TSESTree.Identifier);
             continue;
           }
-          walk(parameter);
+          walk(parameter as BindPattern);
         }
       },
       // eslint-disable-next-line id-match/properties-match
       FunctionExpression(node) {
         for (const parameter of node.params) {
-          if (parameter.type === 'RestElement') {
-            handleIdentifier(parameter.argument);
+          if (parameter.type === AST_NODE_TYPES.RestElement) {
+            handleIdentifier(parameter.argument as TSESTree.Identifier);
             continue;
           }
-          walk(parameter);
+          walk(parameter as BindPattern);
         }
       },
       // eslint-disable-next-line id-match/properties-match
       ArrowFunctionExpression(node) {
         for (const parameter of node.params) {
-          if (parameter.type === 'RestElement') {
-            handleIdentifier(parameter.argument);
+          if (parameter.type === AST_NODE_TYPES.RestElement) {
+            handleIdentifier(parameter.argument as TSESTree.Identifier);
             continue;
           }
-          walk(parameter);
+          walk(parameter as BindPattern);
         }
       },
     };
   },
-};
+});

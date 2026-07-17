@@ -1,9 +1,10 @@
-/** @type {import('eslint').Rule.RuleModule} */
-export default {
+import { ESLintUtils } from '@typescript-eslint/utils';
+
+export default ESLintUtils.RuleCreator.withoutDocs({
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Require identifiers of classes to match a specified regular expression',
+      description: 'Require identifiers of interfaces to match a specified regular expression',
     },
     schema: [
       {
@@ -16,12 +17,11 @@ export default {
   },
 
   create(context) {
-    /** @type {[ pattern: string ]} */
-    const [pattern] = context.options;
+    const [pattern] = context.options as [string];
     const regexp = new RegExp(pattern, 'u');
     return {
       // eslint-disable-next-line id-match/properties-match
-      ClassDeclaration(node) {
+      TSInterfaceDeclaration(node) {
         const { id } = node;
         const { name } = id;
         if (regexp.test(name)) {
@@ -38,4 +38,4 @@ export default {
       },
     };
   },
-};
+});

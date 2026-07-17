@@ -1,5 +1,6 @@
-/** @type {import('eslint').Rule.RuleModule} */
-export default {
+import { AST_NODE_TYPES, ESLintUtils, type TSESTree } from '@typescript-eslint/utils';
+
+export default ESLintUtils.RuleCreator.withoutDocs({
   meta: {
     type: 'suggestion',
     docs: {
@@ -16,11 +17,10 @@ export default {
   },
 
   create(context) {
-    /** @type {[ pattern: string ]} */
-    const [pattern] = context.options;
+    const [pattern] = context.options as [string];
     const regexp = new RegExp(pattern, 'u');
 
-    const report = (node, name) => {
+    const report = (node: TSESTree.Node, name: string) => {
       context.report({
         node,
         messageId: 'notMatch',
@@ -47,8 +47,7 @@ export default {
       ImportSpecifier(node) {
         const { imported, local } = node;
 
-        /** @type {string} */
-        const importedName = imported.type === 'Identifier' ? imported.name : imported.value;
+        const importedName = imported.type === AST_NODE_TYPES.Identifier ? imported.name : imported.value;
         const localName = local.name;
 
         if (localName === importedName || regexp.test(localName)) {
@@ -58,4 +57,4 @@ export default {
       },
     };
   },
-};
+});
