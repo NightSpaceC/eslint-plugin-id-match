@@ -14,9 +14,6 @@ importers:
       '@eslint/core':
         specifier: ^1.2.1
         version: 1.2.1
-      '@types/estree':
-        specifier: ^1.0.9
-        version: 1.0.9
       '@typescript-eslint/types':
         specifier: ^8.64.0
         version: 8.64.0

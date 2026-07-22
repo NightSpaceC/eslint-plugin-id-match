@@ -2,7 +2,7 @@
   "name": "eslint-plugin-id-match",
   "version": "1.0.0",
   "description": "There are some rules to match the identifiers of imports, exports, variables, properties, functions, arguments, classes and members.",
-  "homepage": "https://github.com/NightSpaceC/eslint-plugin-id-match#readme",
+  "homepage": "https://github.com/NightSpaceC/eslint-plugin-id-match",
   "bugs": {
     "url": "https://github.com/NightSpaceC/eslint-plugin-id-match/issues"
   },
@@ -13,15 +13,21 @@
   "scripts": {
     "fmt": "prettier --write .",
     "lint": "eslint",
-    "build": "tsc"
+    "build": "tsc",
+    "prepare": "tsc"
   },
   "license": "MIT",
   "author": "Night Space",
   "type": "module",
-  "main": "src/index.js",
+  "files": ["src", "dist"],
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
   "devDependencies": {
     "@eslint/core": "^1.2.1",
-    "@types/estree": "^1.0.9",
     "@typescript-eslint/types": "^8.64.0",
     "@typescript-eslint/utils": "^8.64.0",
     "eslint": "^10.7.0",
