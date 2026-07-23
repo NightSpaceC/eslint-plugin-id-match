@@ -74,7 +74,7 @@
     "forceConsistentCasingInFileNames": true,
     "isolatedDeclarations": false,
     "isolatedModules": true,
-    "preserveSymlinks": true,
+    "preserveSymlinks": false,
     "verbatimModuleSyntax": true,
 
     // Language and Environment
